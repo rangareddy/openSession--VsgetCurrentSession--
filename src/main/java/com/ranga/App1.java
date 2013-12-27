@@ -25,6 +25,26 @@ public class App1 {
 			if(session != null) {
 				// session.close(); // no need	
 			}			
-		}				
+		}
+
+
+        session = HibernateUtil.getSessionFactory().openSession();
+        try {
+            transaction = session.beginTransaction();
+            // do Some work
+
+            session.flush(); // no need
+            transaction.commit();
+        } catch(Exception ex) {
+            if(transaction != null) {
+                transaction.rollback();
+            }
+            ex.printStackTrace();
+        } finally {
+            if(session != null) {
+                session.close(); // no need
+            }
+        }
+
 	}
 }
